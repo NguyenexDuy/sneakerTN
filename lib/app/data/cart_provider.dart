@@ -1,0 +1,28 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_homework_8910/app/model/product.dart';
+
+class CartProvider extends ChangeNotifier {
+  List<Product> list = [];
+
+  add(Product mo) {
+    list.add(mo);
+    notifyListeners();
+  }
+
+  del(int index) {
+    list.removeAt(index);
+    notifyListeners();
+  }
+
+  int get sum {
+    int count = 0;
+
+    if (list.isNotEmpty)
+      // ignore: curly_braces_in_flow_control_structures
+      for (var element in list) {
+        count += element.price;
+      }
+    notifyListeners();
+    return count;
+  }
+}
