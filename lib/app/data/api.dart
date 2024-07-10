@@ -135,6 +135,32 @@ class APIRepository {
     }
   }
 
+  Future<List<Product>> getProductByIdCategory(
+      String idCate, String token, String accountID) async {
+    try {
+      Response response = await api.sendRequest.get('/Product/getList',
+          options: Options(headers: header(token)),
+          queryParameters: {'accountID': accountID});
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data;
+        // print("truoc khi vao fromJSon: $data");
+        // print(
+        //     "sau khi vao from json: ${data.map((item) => Product.fromJson(item)).toList()}");
+        final transformed = data
+            .map((item) => Product.fromJson(item))
+            .where((item) => item.idCategory.toString() == idCate)
+            .toList();
+        print("day la danh sach giay sap theo loai: $transformed");
+        return transformed;
+      } else {
+        return [];
+      }
+    } catch (ex) {
+      print("da bi loi: ${ex}");
+      rethrow;
+    }
+  }
+
   Future<List<Product>> getProduct(String accountID, String token) async {
     try {
       Response response = await api.sendRequest.get('/Product/getList',
@@ -142,6 +168,9 @@ class APIRepository {
           queryParameters: {'accountID': accountID});
       if (response.statusCode == 200) {
         List<dynamic> data = response.data;
+        print("truoc khi vao fromJSon: $data");
+        print(
+            "sau khi vao from json: ${data.map((item) => Product.fromJson(item)).toList()}");
         return data.map((item) => Product.fromJson(item)).toList();
       } else {
         return [];
@@ -207,8 +236,10 @@ class APIRepository {
     try {
       List<Map<String, dynamic>> oderMap =
           order.map((e) => e.toJson()).toList();
+      print("truoc khi jsonEncode: $oderMap");
 
       final body = jsonEncode(oderMap);
+      print("this is body of paymentCart: $body");
       Response response = await api.sendRequest.post('/Order/addBill',
           options: Options(headers: header(token)), data: body);
       if (response.statusCode == 200) {

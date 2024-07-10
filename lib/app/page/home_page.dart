@@ -6,6 +6,7 @@ import 'package:flutter_homework_8910/app/data/sharepre.dart';
 import 'package:flutter_homework_8910/app/model/category.dart';
 import 'package:flutter_homework_8910/app/model/product.dart';
 import 'package:flutter_homework_8910/app/model/user.dart';
+import 'package:flutter_homework_8910/app/page/detail_cate_page.dart';
 import 'package:flutter_homework_8910/app/page/shoe_detail_page.dart';
 import 'package:flutter_homework_8910/const/image_url.dart';
 import 'package:flutter_homework_8910/widget/item_category.dart';
@@ -145,14 +146,17 @@ class _HomePageState extends State<HomePage> {
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
                   var itemCate = categories[index];
-                  return InkWell(
-                    onTap: () {},
-                    child: itemCategory(
-                      category: itemCate,
-                    ),
+                  return itemCategory(
+                    category: itemCate,
                   );
                 },
               ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(12),
+            child: const Row(
+              children: [Text("Tất cả sản phẩm"), Text("🔥")],
             ),
           ),
           Expanded(
