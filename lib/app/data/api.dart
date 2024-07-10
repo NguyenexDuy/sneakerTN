@@ -97,6 +97,44 @@ class APIRepository {
     }
   }
 
+  Future<List<HistoryOrder>> getHistoryOrder(String token, User user) async {
+    try {
+      Response response = await api.sendRequest
+          .get('/Bill/getHistory', options: Options(headers: header(token)));
+      if (response.statusCode == 200) {
+        print("get data thanh cong");
+        print("Day la data ${response.data}");
+        List<dynamic> encode = response.data;
+        final transformed =
+            encode.map((e) => HistoryOrder.fromJson(e)).toList();
+        // print("sau khi da stranformed: $transformed");
+        return transformed;
+      } else {
+        throw Exception("Failed to load history orders");
+      }
+    } catch (ex) {
+      print(ex);
+      rethrow;
+    }
+  }
+
+  Future<String> removeHistory(String idHis, String token) async {
+    try {
+      Response response = await api.sendRequest.delete('/Bill/remove',
+          options: Options(headers: header(token)),
+          queryParameters: {'billID': idHis});
+      if (response.statusCode == 200) {
+        print("id cua item: $idHis");
+        return "xoa thanh cong";
+      } else {
+        return "xoa faied";
+      }
+    } catch (ex) {
+      print(ex);
+      rethrow;
+    }
+  }
+
   Future<List<Product>> getProduct(String accountID, String token) async {
     try {
       Response response = await api.sendRequest.get('/Product/getList',
@@ -184,26 +222,29 @@ class APIRepository {
     }
   }
 
-  Future<String> getHistoryOrder(
-      HistoryOrder listOrder, String token, User user) async {
-    try {
-      final body = FormData.fromMap({
-        'id': listOrder.id,
-        'fullName': user.fullName,
-        'dateCreated': user.dateCreated
-      });
-      Response response = await api.sendRequest.get('/Bill/getHistory',
-          options: Options(headers: header(token)), data: body);
-      if (response.statusCode == 200) {
-        return "fetch success";
-      } else {
-        return "fetch fail";
-      }
-    } catch (ex) {
-      print(ex);
-      rethrow;
-    }
-  }
+  // Future<String> getHistoryOrder(String token, User user) async {
+  //   try {
+  //     // final body = FormData.fromMap({
+  //     //   'id': listOrder.id,
+  //     //   'fullName': user.fullName,
+  //     //   'dateCreated': user.dateCreated
+  //     // });
+  //     Response response = await api.sendRequest
+  //         .get('/Bill/getHistory', options: Options(headers: header(token)));
+  //     if (response.statusCode == 200) {
+  //       print("get data success");
+  //       final transformed = jsonDecode(response.data);
+  //       // print(transformed);
+
+  //       return "Danh sach :${transformed[0]['id']}";
+  //     } else {
+  //       return "fail";
+  //     }
+  //   } catch (ex) {
+  //     print(ex);
+  //     rethrow;
+  //   }
+  // }
 
   Future<String> updatePro(
       Product product, String acountID, String token) async {

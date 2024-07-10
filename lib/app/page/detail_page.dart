@@ -40,23 +40,24 @@ class _DetailState extends State<Detail> {
     );
     return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Row(
-        children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(user.imageURL!),
-            backgroundColor: Colors.lightBlue,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              user.fullName!,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(user.imageURL!),
+                backgroundColor: Colors.lightBlue,
               ),
-            ),
-          )
-        ],
-      )),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                  user.fullName!,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              )
+            ],
+          )),
       body: SingleChildScrollView(
         // child: Center(
         //   child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
