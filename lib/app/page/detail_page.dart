@@ -29,9 +29,10 @@ class _DetailState extends State<Detail> {
     super.initState();
     getDataUser();
   }
+  
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
     // create style
     TextStyle mystyle = const TextStyle(
       fontSize: 24,

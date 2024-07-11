@@ -50,16 +50,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       products = listPro;
     });
-
-    // print("Danh sach san pham");
-    // for (var product in products) {
-    //   print('Product ID: ${product.idProduct}');
-    //   print('Name: ${product.nameProduct}');
-    //   print('Description: ${product.description}');
-    //   print('Image URL: ${product.imageUrl}');
-    //   print('Price: ${product.price}');
-    //   print('------------');
-    // }
   }
 
   Future<void> fetchCategor() async {
@@ -153,9 +143,9 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.all(12),
-            child: const Row(
+            child: Row(
               children: [Text("Tất cả sản phẩm"), Text("🔥")],
             ),
           ),

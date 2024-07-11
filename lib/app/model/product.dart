@@ -6,6 +6,7 @@ class Product {
   int price;
   int idCategory;
   String? categoryName;
+  bool? isFavorite;
 
   Product(
       {this.idProduct,
@@ -14,7 +15,8 @@ class Product {
       required this.imageUrl,
       required this.price,
       required this.idCategory,
-      this.categoryName});
+      this.categoryName,
+      this.isFavorite});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -27,9 +29,28 @@ class Product {
         categoryName: json['categoryName']);
   }
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = new Map<String, dynamic>();
-  //   data['productID'] = this.idProduct;
+  factory Product.fromMap(Map<String, dynamic> map) {
+    return Product(
+        idProduct: map['id'],
+        nameProduct: map['name'],
+        description: map['description'],
+        imageUrl: map['imageURL'],
+        price: map['price'],
+        idCategory: map['categoryID'],
+        categoryName: map['categoryName'],
+        isFavorite: map['isFavorite']);
+  }
 
-  // }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = idProduct;
+    data['name'] = nameProduct;
+    data['description'] = description;
+    data['imageURL'] = imageUrl;
+    data['price'] = price;
+    data['categoryID'] = idCategory;
+    data['categoryName'] = categoryName;
+    data['isFavorite'] = isFavorite;
+    return data;
+  }
 }

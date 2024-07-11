@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_homework_8910/app/data/cart_provider.dart';
+import 'package:flutter_homework_8910/app/page/auth/login.dart';
 import 'package:flutter_homework_8910/app/page/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,7 @@ class MainApp extends StatelessWidget {
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
+        home: LoginScreen(),
       ),
     );
     // const MaterialApp(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_homework_8910/app/data/cart_provider.dart';
+import 'package:flutter_homework_8910/app/data/helper/db_helper.dart';
 import 'package:flutter_homework_8910/app/model/product.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +13,27 @@ class ShoeDetailPage extends StatefulWidget {
 }
 
 class _ShoeDetailPageState extends State<ShoeDetailPage> {
+  final DatabaseHelper _databaseService = DatabaseHelper();
+
+  bool isFavorite = false;
   List<String> size = ['37', '38', '39', '40', '41', '42'];
+
+  Future<void> onSaveFavorite() async {
+    await _databaseService.insertProduct(widget.product);
+    print("da luu vao danh sach yeu thich");
+    setState(() {
+      isFavorite = !isFavorite;
+    });
+  }
+
+  Future<void> onDeleteFavorite() async {
+    await _databaseService.deleteProduct(widget.product.idProduct!);
+    print("da xoa danh sach yeu thich");
+    setState(() {
+      isFavorite = !isFavorite;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +41,17 @@ class _ShoeDetailPageState extends State<ShoeDetailPage> {
           title: const Text("Chi tiết giày"),
           actions: [
             IconButton(
-              icon: const Icon(Icons.favorite),
-              onPressed: () {},
+              icon: isFavorite
+                  ? const Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                    )
+                  : const Icon(
+                      Icons.favorite_border,
+                    ),
+              onPressed: () {
+                isFavorite ? onDeleteFavorite() : onSaveFavorite();
+              },
             )
           ],
         ),

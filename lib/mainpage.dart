@@ -77,11 +77,9 @@ class _MainpageState extends State<Mainpage> {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 243, 152, 33),
-              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   user.imageURL!.length < 5
                       ? const SizedBox()
@@ -125,13 +123,15 @@ class _MainpageState extends State<Mainpage> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.pages),
-              title: const Text('Page1'),
+              leading: const Icon(Icons.favorite),
+              title: const Text('Favorite'),
               onTap: () {
                 Navigator.pop(context);
                 _selectedIndex = 0;
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Page1()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const FavoritePage()));
               },
             ),
             ListTile(
