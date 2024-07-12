@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_homework_8910/app/model/category.dart';
+import 'package:flutter_homework_8910/app/model/history_detail.dart';
 import 'package:flutter_homework_8910/app/model/history_order.dart';
 import 'package:flutter_homework_8910/app/model/order.dart';
 import 'package:flutter_homework_8910/app/model/product.dart';
@@ -30,36 +31,6 @@ class APIRepository {
       'Accept': '*/*',
       'Authorization': 'Bearer $token'
     };
-  }
-
-  Future<String> updateProfile(String token, User user) async {
-    try {
-      final body = FormData.fromMap({
-        'NumberID': user.idNumber,
-        'FullName': user.fullName,
-        'PhoneNumber': user.phoneNumber,
-        'Gender': user.gender,
-        'BirthDay': user.birthDay,
-        'SchoolYear': user.schoolYear,
-        'SchoolKey': user.schoolKey,
-        'ImageURL': user.imageURL,
-      });
-      Response res = await api.sendRequest.put(
-        '/Auth/updateProfile',
-        options: Options(headers: header(token)),
-        data: body,
-      );
-      if (res.statusCode == 200) {
-        print("update profile success");
-        return res.statusCode.toString();
-      } else {
-        print("update fail");
-        return res.statusCode.toString();
-      }
-    } catch (ex) {
-      print(ex);
-      rethrow;
-    }
   }
 
   Future<String> register(Signup user) async {
@@ -144,6 +115,30 @@ class APIRepository {
   }
 
 //------------------GET FUTURE------------------
+
+  Future<List<HistoryDetail>> getHistoryDetailById(
+      String id, String token) async {
+    try {
+      Response res = await api.sendRequest.post("/Bill/getByID",
+          options: Options(headers: header(token)),
+          queryParameters: {'billID': id});
+      if (res.statusCode == 200) {
+        print("status code: ${res.statusCode}");
+        List<dynamic> data = res.data;
+        print("day la mang history detal: $data");
+        final trasnformed =
+            data.map((item) => HistoryDetail.fromJson(item)).toList();
+
+        return trasnformed;
+      } else {
+        return [];
+      }
+    } catch (ex) {
+      print(ex);
+      rethrow;
+    }
+  }
+
   Future<List<Product>> getProductByIdCategory(
       String idCate, String token, String accountID) async {
     try {
@@ -282,6 +277,36 @@ class APIRepository {
     }
   }
 
+  Future<String> updateProfile(String token, User user) async {
+    try {
+      final body = FormData.fromMap({
+        'NumberID': user.idNumber,
+        'FullName': user.fullName,
+        'PhoneNumber': user.phoneNumber,
+        'Gender': user.gender,
+        'BirthDay': user.birthDay,
+        'SchoolYear': user.schoolYear,
+        'SchoolKey': user.schoolKey,
+        'ImageURL': user.imageURL,
+      });
+      Response res = await api.sendRequest.put(
+        '/Auth/updateProfile',
+        options: Options(headers: header(token)),
+        data: body,
+      );
+      if (res.statusCode == 200) {
+        print("update profile success");
+        return res.statusCode.toString();
+      } else {
+        print("update fail");
+        return res.statusCode.toString();
+      }
+    } catch (ex) {
+      print(ex);
+      rethrow;
+    }
+  }
+
 //------------------PAYMENT FUTURE------------------
   Future<String> paymentCart(List<Order> order, String token) async {
     try {
@@ -303,30 +328,6 @@ class APIRepository {
       rethrow;
     }
   }
-
-  // Future<String> getHistoryOrder(String token, User user) async {
-  //   try {
-  //     // final body = FormData.fromMap({
-  //     //   'id': listOrder.id,
-  //     //   'fullName': user.fullName,
-  //     //   'dateCreated': user.dateCreated
-  //     // });
-  //     Response response = await api.sendRequest
-  //         .get('/Bill/getHistory', options: Options(headers: header(token)));
-  //     if (response.statusCode == 200) {
-  //       print("get data success");
-  //       final transformed = jsonDecode(response.data);
-  //       // print(transformed);
-
-  //       return "Danh sach :${transformed[0]['id']}";
-  //     } else {
-  //       return "fail";
-  //     }
-  //   } catch (ex) {
-  //     print(ex);
-  //     rethrow;
-  //   }
-  // }
 
 //------------------INSERT FUTURE------------------
 

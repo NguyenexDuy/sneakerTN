@@ -18,11 +18,11 @@ class HistoryOrder {
       total: json['total']);
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['fullName'] = this.fullName;
-    data['dateCreated'] = this.dateCreated;
-    data['total'] = this.total;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['fullName'] = fullName;
+    data['dateCreated'] = dateCreated;
+    data['total'] = total;
     return data;
   }
 }

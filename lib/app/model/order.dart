@@ -8,9 +8,9 @@ class Order {
   });
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['productID'] = this.productID;
-    data['count'] = this.count;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['productID'] = productID;
+    data['count'] = count;
 
     return data;
   }

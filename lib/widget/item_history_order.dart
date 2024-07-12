@@ -13,7 +13,9 @@ class ItemHistory extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HistoryDetailPage(),
+              builder: (context) => HistoryDetailPage(
+                historyOrder: itemHistory,
+              ),
             ));
       },
       child: Padding(

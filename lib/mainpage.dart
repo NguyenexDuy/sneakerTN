@@ -51,7 +51,7 @@ class _MainpageState extends State<Mainpage> {
       case 0:
         return HomePage();
       case 1:
-        return HistoryPage();
+        return const HistoryPage();
       case 2:
         return CartPage();
       case 3:
