@@ -17,11 +17,13 @@ class CartProvider extends ChangeNotifier {
   int get sum {
     int count = 0;
 
-    if (list.isNotEmpty)
-      // ignore: curly_braces_in_flow_control_structures
+    if (list.isNotEmpty) {
       for (var element in list) {
         count += element.price;
       }
+      return count;
+    }
+
     notifyListeners();
     return count;
   }

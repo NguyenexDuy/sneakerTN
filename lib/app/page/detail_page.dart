@@ -29,10 +29,13 @@ class _DetailState extends State<Detail> {
     super.initState();
     getDataUser();
   }
-  
+
+  void refeshPage() {
+    setState(() {});
+  }
 
   @override
-  Widget build(BuildContext context)  {
+  Widget build(BuildContext context) {
     // create style
     TextStyle mystyle = const TextStyle(
       fontSize: 24,
@@ -60,24 +63,6 @@ class _DetailState extends State<Detail> {
             ],
           )),
       body: SingleChildScrollView(
-        // child: Center(
-        //   child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        //     Image(
-        //       image: NetworkImage(user.imageURL!),
-        //       height: 200,
-        //       width: 200,
-        //     ),
-        //     Text("AccoundID: ${user.accountId}", style: mystyle),
-        //     Text("NumberID: ${user.idNumber}", style: mystyle),
-        //     Text("Fullname: ${user.fullName}", style: mystyle),
-        //     Text("Phone Number: ${user.phoneNumber}", style: mystyle),
-        //     Text("Gender: ${user.gender}", style: mystyle),
-        //     Text("birthDay: ${user.birthDay}", style: mystyle),
-        //     Text("schoolYear: ${user.schoolYear}", style: mystyle),
-        //     Text("schoolKey: ${user.schoolKey}", style: mystyle),
-        //     Text("dateCreated: ${user.dateCreated}", style: mystyle),
-        //   ]),
-        // ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -188,11 +173,11 @@ class _DetailState extends State<Detail> {
             ),
             InkWell(
               onTap: () {},
-              child: ListTile(
+              child: const ListTile(
                 title: Row(
                   children: [
-                    const Icon(Icons.password),
-                    const SizedBox(
+                    Icon(Icons.password),
+                    SizedBox(
                       width: 10,
                     ),
                     Text("Quên mật khẩu"),

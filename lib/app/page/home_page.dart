@@ -146,7 +146,13 @@ class _HomePageState extends State<HomePage> {
           const Padding(
             padding: EdgeInsets.all(12),
             child: Row(
-              children: [Text("Tất cả sản phẩm"), Text("🔥")],
+              children: [
+                Text(
+                  "Tất cả sản phẩm",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text("🔥")
+              ],
             ),
           ),
           Expanded(

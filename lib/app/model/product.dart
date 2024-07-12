@@ -31,14 +31,14 @@ class Product {
 
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
-        idProduct: map['id'],
-        nameProduct: map['name'],
-        description: map['description'],
-        imageUrl: map['imageURL'],
-        price: map['price'],
-        idCategory: map['categoryID'],
-        categoryName: map['categoryName'],
-        isFavorite: map['isFavorite']);
+      idProduct: map['id'],
+      nameProduct: map['name'],
+      description: map['description'],
+      imageUrl: map['imageURL'],
+      price: map['price'],
+      idCategory: map['categoryID'],
+      categoryName: map['categoryName'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -50,7 +50,6 @@ class Product {
     data['price'] = price;
     data['categoryID'] = idCategory;
     data['categoryName'] = categoryName;
-    data['isFavorite'] = isFavorite;
     return data;
   }
 }

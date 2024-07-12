@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class FavoritePage extends StatelessWidget {
-  const FavoritePage({super.key});
+class HistoryDetailPage extends StatelessWidget {
+  const HistoryDetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Favorite page"),
+        title: Text("Chi tiết hóa đơn"),
       ),
     );
   }

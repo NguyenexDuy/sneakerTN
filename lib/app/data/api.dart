@@ -32,6 +32,36 @@ class APIRepository {
     };
   }
 
+  Future<String> updateProfile(String token, User user) async {
+    try {
+      final body = FormData.fromMap({
+        'NumberID': user.idNumber,
+        'FullName': user.fullName,
+        'PhoneNumber': user.phoneNumber,
+        'Gender': user.gender,
+        'BirthDay': user.birthDay,
+        'SchoolYear': user.schoolYear,
+        'SchoolKey': user.schoolKey,
+        'ImageURL': user.imageURL,
+      });
+      Response res = await api.sendRequest.put(
+        '/Auth/updateProfile',
+        options: Options(headers: header(token)),
+        data: body,
+      );
+      if (res.statusCode == 200) {
+        print("update profile success");
+        return res.statusCode.toString();
+      } else {
+        print("update fail");
+        return res.statusCode.toString();
+      }
+    } catch (ex) {
+      print(ex);
+      rethrow;
+    }
+  }
+
   Future<String> register(Signup user) async {
     try {
       final body = FormData.fromMap({
@@ -62,6 +92,16 @@ class APIRepository {
     }
   }
 
+  Future<User> current(String token) async {
+    try {
+      Response res = await api.sendRequest
+          .get('/Auth/current', options: Options(headers: header(token)));
+      return User.fromJson(res.data);
+    } catch (ex) {
+      rethrow;
+    }
+  }
+
   Future<String> fogetPass(
       String accountID, String numberID, String newPass) async {
     try {
@@ -80,37 +120,22 @@ class APIRepository {
     }
   }
 
-  Future<List<Category>> getCates(String accountID, String token) async {
+  Future<String> login(String accountID, String password) async {
     try {
-      Response response = await api.sendRequest.get('/Category/getList',
-          options: Options(headers: header(token)),
-          queryParameters: {'accountID': accountID});
-      if (response.statusCode == 200) {
-        List<dynamic> data = response.data;
-        return data.map((item) => Category.fromJson(item)).toList();
-      } else {
-        return [];
-      }
-    } catch (ex) {
-      print("da bi loi: ${ex}");
-      rethrow;
-    }
-  }
+      final body =
+          FormData.fromMap({'AccountID': accountID, 'Password': password});
+      Response res = await api.sendRequest.post('/Auth/login',
+          options: Options(headers: header('no token')), data: body);
+      if (res.statusCode == 200) {
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        await preferences.setString("pass", password);
 
-  Future<List<HistoryOrder>> getHistoryOrder(String token, User user) async {
-    try {
-      Response response = await api.sendRequest
-          .get('/Bill/getHistory', options: Options(headers: header(token)));
-      if (response.statusCode == 200) {
-        print("get data thanh cong");
-        print("Day la data ${response.data}");
-        List<dynamic> encode = response.data;
-        final transformed =
-            encode.map((e) => HistoryOrder.fromJson(e)).toList();
-        // print("sau khi da stranformed: $transformed");
-        return transformed;
+        final tokenData = res.data['data']['token'];
+        await preferences.setString("token", tokenData);
+        print("ok login");
+        return tokenData;
       } else {
-        throw Exception("Failed to load history orders");
+        return "login fail";
       }
     } catch (ex) {
       print(ex);
@@ -118,23 +143,7 @@ class APIRepository {
     }
   }
 
-  Future<String> removeHistory(String idHis, String token) async {
-    try {
-      Response response = await api.sendRequest.delete('/Bill/remove',
-          options: Options(headers: header(token)),
-          queryParameters: {'billID': idHis});
-      if (response.statusCode == 200) {
-        print("id cua item: $idHis");
-        return "xoa thanh cong";
-      } else {
-        return "xoa faied";
-      }
-    } catch (ex) {
-      print(ex);
-      rethrow;
-    }
-  }
-
+//------------------GET FUTURE------------------
   Future<List<Product>> getProductByIdCategory(
       String idCate, String token, String accountID) async {
     try {
@@ -181,22 +190,37 @@ class APIRepository {
     }
   }
 
-  Future<String> login(String accountID, String password) async {
+  Future<List<Category>> getCates(String accountID, String token) async {
     try {
-      final body =
-          FormData.fromMap({'AccountID': accountID, 'Password': password});
-      Response res = await api.sendRequest.post('/Auth/login',
-          options: Options(headers: header('no token')), data: body);
-      if (res.statusCode == 200) {
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        await preferences.setString("pass", password);
-
-        final tokenData = res.data['data']['token'];
-        await preferences.setString("token", tokenData);
-        print("ok login");
-        return tokenData;
+      Response response = await api.sendRequest.get('/Category/getList',
+          options: Options(headers: header(token)),
+          queryParameters: {'accountID': accountID});
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data;
+        return data.map((item) => Category.fromJson(item)).toList();
       } else {
-        return "login fail";
+        return [];
+      }
+    } catch (ex) {
+      print("da bi loi: ${ex}");
+      rethrow;
+    }
+  }
+
+  Future<List<HistoryOrder>> getHistoryOrder(String token, User user) async {
+    try {
+      Response response = await api.sendRequest
+          .get('/Bill/getHistory', options: Options(headers: header(token)));
+      if (response.statusCode == 200) {
+        print("get data thanh cong");
+        print("Day la data ${response.data}");
+        List<dynamic> encode = response.data;
+        final transformed =
+            encode.map((e) => HistoryOrder.fromJson(e)).toList();
+        // print("sau khi da stranformed: $transformed");
+        return transformed;
+      } else {
+        throw Exception("Failed to load history orders");
       }
     } catch (ex) {
       print(ex);
@@ -204,6 +228,7 @@ class APIRepository {
     }
   }
 
+//------------------UPDATE FUTURE------------------
   Future<String> updateCate(
       Category cate, String acountID, String token) async {
     try {
@@ -232,6 +257,32 @@ class APIRepository {
     }
   }
 
+  Future<String> updatePro(
+      Product product, String acountID, String token) async {
+    try {
+      final body = FormData.fromMap({
+        'id': product.idProduct,
+        'Name': product.nameProduct,
+        'Description': product.description,
+        'ImageURL': product.imageUrl,
+        'Price': product.price,
+        'CategoryID': product.idCategory,
+        'accountID': acountID,
+      });
+      Response response = await api.sendRequest.put('/updateProduct',
+          options: Options(headers: header(token)), data: body);
+      if (response.statusCode == 200) {
+        return "update pro success";
+      } else {
+        return "update pro fail";
+      }
+    } catch (ex) {
+      print(ex);
+      rethrow;
+    }
+  }
+
+//------------------PAYMENT FUTURE------------------
   Future<String> paymentCart(List<Order> order, String token) async {
     try {
       List<Map<String, dynamic>> oderMap =
@@ -277,30 +328,7 @@ class APIRepository {
   //   }
   // }
 
-  Future<String> updatePro(
-      Product product, String acountID, String token) async {
-    try {
-      final body = FormData.fromMap({
-        'id': product.idProduct,
-        'Name': product.nameProduct,
-        'Description': product.description,
-        'ImageURL': product.imageUrl,
-        'Price': product.price,
-        'CategoryID': product.idCategory,
-        'accountID': acountID,
-      });
-      Response response = await api.sendRequest.put('/updateProduct',
-          options: Options(headers: header(token)), data: body);
-      if (response.statusCode == 200) {
-        return "update pro success";
-      } else {
-        return "update pro fail";
-      }
-    } catch (ex) {
-      print(ex);
-      rethrow;
-    }
-  }
+//------------------INSERT FUTURE------------------
 
   Future<String> insertCate(
       Category cate, String accountID, String token) async {
@@ -352,6 +380,8 @@ class APIRepository {
     }
   }
 
+//------------------DELETE FUTURE------------------
+
   Future<String> deleteCategory(
       Category cate, String accountID, String token) async {
     try {
@@ -365,9 +395,9 @@ class APIRepository {
         data: body,
       );
       if (response.statusCode == 200) {
-        return "delete success";
+        return "delete cate success";
       } else {
-        return "delete fail";
+        return "delete cate fail";
       }
     } catch (ex) {
       print(ex);
@@ -375,12 +405,37 @@ class APIRepository {
     }
   }
 
-  Future<User> current(String token) async {
+  Future<String> deleteProduct(
+      Product pro, String accountID, String token) async {
     try {
-      Response res = await api.sendRequest
-          .get('/Auth/current', options: Options(headers: header(token)));
-      return User.fromJson(res.data);
+      final body = FormData.fromMap(
+          {"productID": pro.idProduct, "accountID": accountID});
+      Response response = await api.sendRequest.delete("/removeProduct",
+          options: Options(headers: header(token)), data: body);
+      if (response.statusCode == 200) {
+        return "delete product success";
+      } else {
+        return "delete product fail";
+      }
     } catch (ex) {
+      print(ex);
+      rethrow;
+    }
+  }
+
+  Future<String> removeHistory(String idHis, String token) async {
+    try {
+      Response response = await api.sendRequest.delete('/Bill/remove',
+          options: Options(headers: header(token)),
+          queryParameters: {'billID': idHis});
+      if (response.statusCode == 200) {
+        print("id cua item: $idHis");
+        return "xoa thanh cong";
+      } else {
+        return "xoa faied";
+      }
+    } catch (ex) {
+      print(ex);
       rethrow;
     }
   }

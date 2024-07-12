@@ -6,7 +6,7 @@ import 'package:flutter_homework_8910/app/page/cart_page.dart';
 import 'package:flutter_homework_8910/app/page/detail_page.dart';
 import 'package:flutter_homework_8910/app/page/history_page.dart';
 import 'package:flutter_homework_8910/app/page/home_page.dart';
-import 'package:flutter_homework_8910/app/route/page1.dart';
+import 'package:flutter_homework_8910/app/route/favorite_page.dart';
 import 'package:flutter_homework_8910/app/route/page2.dart';
 import 'package:flutter_homework_8910/app/route/page3.dart';
 import 'app/page/defaultwidget.dart';

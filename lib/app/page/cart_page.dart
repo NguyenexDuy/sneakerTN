@@ -30,8 +30,7 @@ class _CartPageState extends State<CartPage> {
   payMentMethod() async {
     print("dang vo payment");
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String token = await preferences.getString("token")!;
-    User user = await getUser();
+    String token = preferences.getString("token")!;
     String request = await APIRepository().paymentCart(orders, token);
     print(request);
     print("ket thuc payment");
@@ -45,55 +44,64 @@ class _CartPageState extends State<CartPage> {
           return Column(
             children: [
               Expanded(
-                child: ListView.builder(
-                  itemCount: value.list.length,
-                  itemBuilder: (context, index) {
-                    var itemPro = value.list[index];
-                    return item_cart(
-                      product: itemPro,
-                    );
-                  },
-                ),
+                // child: ListView.builder(
+                //   itemCount: value.list.length,
+                //   itemBuilder: (context, index) {
+                //     var itemPro = value.list[index];
+                //     return item_cart(
+                //       product: itemPro,
+                //     );
+                //   },
+                // ),
+                child: value.list.isEmpty
+                    ? const Center(
+                        child: Text("Khong co san pham can thanh toan"))
+                    : ListView.builder(
+                        itemCount: value.list.length,
+                        itemBuilder: (context, index) {
+                          var itemPro = value.list[index];
+                          return item_cart(
+                            product: itemPro,
+                          );
+                        },
+                      ),
               ),
-              Container(
-                height: 150,
-                width: double.infinity,
-                color: Colors.grey[350],
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Tổng tiền",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 25),
-                        ),
-                        Text(
-                          value.sum.toString(),
-                          style: const TextStyle(fontSize: 18),
-                        )
-                      ],
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        // for (var element in value.list) {
-                        //   orders.add(Order(
-                        //       productID: element.idProduct.toString(),
-                        //       count: 1));
-                        // }
-                        getListOrder(value.list);
+              value.list.isEmpty
+                  ? const SizedBox()
+                  : Container(
+                      height: 150,
+                      width: double.infinity,
+                      color: Colors.grey[350],
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Tổng tiền",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 25),
+                              ),
+                              Text(
+                                value.sum.toString(),
+                                style: const TextStyle(fontSize: 18),
+                              )
+                            ],
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              getListOrder(value.list);
 
-                        print("Ressult ${orders.length}");
-                        payMentMethod();
-                      },
-                      child: const Text("Thanh toán"),
+                              print("Ressult ${orders.length}");
+                              payMentMethod();
+                            },
+                            child: const Text("Thanh toán"),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
             ],
           );
         },

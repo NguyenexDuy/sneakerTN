@@ -32,14 +32,14 @@ class DatabaseHelper {
     //     'CREATE TABLE product_favorite(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT,price INTEGER,img TEXT, des TEXT, catid INTEGER);');
 
     await db.execute(
-        'CREATE TABLE product (id INTEGER PRIMARY KEY AUTOINCREMENT,  name TEXT,  description TEXT,  imageURL TEXT,  price INTEGER,  categoryID INTEGER,  categoryName TEXT,  isFavorite BOOLEAN);');
+        'CREATE TABLE productFavorite (id INTEGER PRIMARY KEY AUTOINCREMENT,  name TEXT,  description TEXT,  imageURL TEXT,  price INTEGER,  categoryID INTEGER,  categoryName TEXT);');
   }
 
   Future<void> insertProduct(Product productModel) async {
     final db = await _databaseService.database;
 
     await db.insert(
-      'product',
+      'productFavorite',
       productModel.toJson(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -48,7 +48,7 @@ class DatabaseHelper {
   Future<void> deleteProduct(int id) async {
     final db = await _databaseService.database;
     await db.delete(
-      'product',
+      'productFavorite',
       where: 'id = ?',
       whereArgs: [id],
     );
@@ -56,7 +56,7 @@ class DatabaseHelper {
 
   Future<List<Product>> productsFavorite() async {
     final db = await _databaseService.database;
-    final List<Map<String, dynamic>> maps = await db.query('product');
-    return List.generate(maps.length, (index) => Product.fromJson(maps[index]));
+    final List<Map<String, dynamic>> maps = await db.query('productFavorite');
+    return List.generate(maps.length, (index) => Product.fromMap(maps[index]));
   }
 }

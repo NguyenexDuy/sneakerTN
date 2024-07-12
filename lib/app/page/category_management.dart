@@ -61,7 +61,7 @@ class _CategoryManagementState extends State<CategoryManagement> {
     });
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String token = await preferences.getString("token")!;
+    String token = preferences.getString("token")!;
     User user = await getUser();
     String request = await APIRepository()
         .deleteCategory(cate, user.accountId.toString(), token);
@@ -79,7 +79,7 @@ class _CategoryManagementState extends State<CategoryManagement> {
     bool isAdd = true;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Quản lý loại"),
+        title: const Text("Quản lý loại"),
       ),
       body: Stack(
         children: [

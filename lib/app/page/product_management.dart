@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_homework_8910/app/data/api.dart';
+import 'package:flutter_homework_8910/app/data/sharepre.dart';
 import 'package:flutter_homework_8910/app/model/product.dart';
 import 'package:flutter_homework_8910/app/model/user.dart';
 import 'package:flutter_homework_8910/app/page/edit_product.dart';
@@ -40,6 +41,25 @@ class _ProductManagementState extends State<ProductManagement> {
     super.initState();
   }
 
+  void refeshProducts() {
+    setState(() {
+      future = getAllProdcut();
+    });
+    print("refesh lai trang");
+  }
+
+  Future<void> deletePro(Product product) async {
+    print("dang vo ham xoa san pham");
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String token = preferences.getString("token")!;
+    User user = await getUser();
+    String request = await APIRepository()
+        .deleteProduct(product, user.accountId.toString(), token);
+    refeshProducts();
+
+    print(request);
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isAdd = true;
@@ -64,7 +84,7 @@ class _ProductManagementState extends State<ProductManagement> {
               var itemProduct = snapshot.data![index];
 
               return Padding(
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 child: Container(
                   width: double.infinity,
                   height: 150,
@@ -113,12 +133,38 @@ class _ProductManagementState extends State<ProductManagement> {
                                         builder: (context) => EditProduct(
                                           isAdd: isAdd,
                                           product: itemProduct,
+                                          refeshProducts: refeshProducts,
                                         ),
                                       ));
                                 }
                               }),
                           IconButton(
-                              onPressed: () {}, icon: const Icon(Icons.delete))
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text("Xác nhận xóa"),
+                                      content: const Text(
+                                          "Bạn có chắc chắn muốn xóa item này?"),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text("Hủy")),
+                                        TextButton(
+                                            onPressed: () {
+                                              deletePro(itemProduct);
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text("Xác nhận"))
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              icon: const Icon(Icons.delete))
                         ],
                       )
                     ],
@@ -135,7 +181,10 @@ class _ProductManagementState extends State<ProductManagement> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => EditProduct(isAdd: isAdd),
+                  builder: (context) => EditProduct(
+                    isAdd: isAdd,
+                    refeshProducts: refeshProducts,
+                  ),
                 ));
           }
         },

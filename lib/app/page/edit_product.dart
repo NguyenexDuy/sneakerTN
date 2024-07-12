@@ -6,9 +6,14 @@ import 'package:flutter_homework_8910/app/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProduct extends StatefulWidget {
-  EditProduct({super.key, required this.isAdd, this.product});
+  EditProduct(
+      {super.key,
+      required this.isAdd,
+      this.product,
+      required this.refeshProducts});
   bool isAdd;
   Product? product;
+  final Function refeshProducts;
 
   @override
   State<EditProduct> createState() => _EditProductState();
@@ -41,7 +46,7 @@ class _EditProductState extends State<EditProduct> {
   editFuncion() async {
     print("dagn edit product");
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String token = await preferences.getString("token")!;
+    String token = preferences.getString("token")!;
     User user = await getUser();
 
     Product pro = Product(
@@ -55,6 +60,7 @@ class _EditProductState extends State<EditProduct> {
         await APIRepository().updatePro(pro, user.accountId.toString(), token);
     print(request);
     print("Ket thuc edit pro");
+    widget.refeshProducts();
     Navigator.pop(context);
   }
 
@@ -73,6 +79,8 @@ class _EditProductState extends State<EditProduct> {
         .insertProduct(model, user.accountId.toString(), token);
     print(request);
     print("ket thuc insert");
+    widget.refeshProducts();
+
     Navigator.pop(context);
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_homework_8910/app/model/history_order.dart';
+import 'package:flutter_homework_8910/app/page/history_detail_page.dart';
 
 class ItemHistory extends StatelessWidget {
   ItemHistory({super.key, required this.itemHistory});
@@ -8,7 +9,13 @@ class ItemHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HistoryDetailPage(),
+            ));
+      },
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Container(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_homework_8910/app/data/api.dart';
 import 'package:flutter_homework_8910/app/data/sharepre.dart';
@@ -38,9 +40,9 @@ class _EditCateState extends State<EditCate> {
   }
 
   editFuncion() async {
-    print("dang vo edit funcion");
+    log("dang vo edit funcion");
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String token = await preferences.getString("token")!;
+    String token = preferences.getString("token")!;
     User user = await getUser();
     Category model = Category(
         idCategory: widget.category!.idCategory,
@@ -50,8 +52,8 @@ class _EditCateState extends State<EditCate> {
     String request = await APIRepository()
         .updateCate(model, user.accountId.toString(), token);
 
-    print(request);
-    print("ket thuc edit");
+    log(request);
+    log("ket thuc edit");
     widget.refreshCategories(); // Thực thi hàm refreshCategories
     Navigator.pop(context);
   }

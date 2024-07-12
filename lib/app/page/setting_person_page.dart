@@ -1,11 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_homework_8910/app/data/api.dart';
+import 'package:flutter_homework_8910/app/data/sharepre.dart';
 import 'package:flutter_homework_8910/app/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingPersonPage extends StatefulWidget {
-  const SettingPersonPage({super.key});
+  const SettingPersonPage({
+    super.key,
+  });
 
   @override
   State<SettingPersonPage> createState() => _SettingPersonPageState();
@@ -42,6 +46,31 @@ class _SettingPersonPageState extends State<SettingPersonPage> {
     setState(() {});
   }
 
+  void updateProfileUser() async {
+    print("vao ham updat profile");
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString("token")!;
+    pref.remove("");
+    User userModel = User(
+      accountId: user.accountId,
+      idNumber: idController.text,
+      fullName: nameController.text,
+      phoneNumber: phoneController.text,
+      imageURL: imageController.text,
+      birthDay: dayOfBirthController.text,
+      gender: genderController.text,
+      schoolYear: schoolYearController.text,
+      schoolKey: schoolKeyController.text,
+      dateCreated: user.dateCreated,
+      status: user.status,
+    );
+    //lưu dũ liệu lại cho user
+    saveUser(userModel);
+
+    String response = await APIRepository().updateProfile(token, userModel);
+    print("Trang thai respone: $response");
+  }
+
   @override
   void initState() {
     super.initState();
@@ -52,7 +81,7 @@ class _SettingPersonPageState extends State<SettingPersonPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chỉnh sửa thông tin cá nhân"),
+        title: const Text("Chỉnh sửa thông tin cá nhân"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -60,56 +89,56 @@ class _SettingPersonPageState extends State<SettingPersonPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Ảnh đại diện",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               TextFormField(
                 controller: imageController,
               ),
-              Text(
+              const Text(
                 "ID",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               TextFormField(
                 controller: idController,
               ),
-              Text(
+              const Text(
                 "Số điện thoại",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               TextFormField(
                 controller: phoneController,
               ),
-              Text(
+              const Text(
                 "Giới tính",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               TextFormField(
                 controller: genderController,
               ),
-              Text(
+              const Text(
                 "Mã số SV",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               TextFormField(
                 controller: masoSVController,
               ),
-              Text(
+              const Text(
                 "Ngày sinh",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               TextFormField(
                 controller: dayOfBirthController,
               ),
-              Text(
+              const Text(
                 "Năm học",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               TextFormField(
                 controller: schoolYearController,
               ),
-              Text(
+              const Text(
                 "School key",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
@@ -117,9 +146,10 @@ class _SettingPersonPageState extends State<SettingPersonPage> {
                 controller: schoolKeyController,
               ),
               Padding(
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 child: ElevatedButton(
-                    onPressed: () {}, child: Center(child: Text("Cập nhật"))),
+                    onPressed: updateProfileUser,
+                    child: const Center(child: Text("Cập nhật"))),
               )
             ],
           ),
