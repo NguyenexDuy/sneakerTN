@@ -53,7 +53,7 @@ class _MainpageState extends State<Mainpage> {
       case 1:
         return const HistoryPage();
       case 2:
-        return CartPage();
+        return const CartPage();
       case 3:
         {
           return const Detail();
@@ -69,7 +69,7 @@ class _MainpageState extends State<Mainpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("HL Mobile"),
+        title: const Text("SNEAKER TN"),
       ),
       drawer: Drawer(
         child: ListView(

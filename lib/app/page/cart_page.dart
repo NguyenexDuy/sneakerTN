@@ -96,6 +96,13 @@ class _CartPageState extends State<CartPage> {
 
                               print("Ressult ${orders.length}");
                               payMentMethod();
+                              value.deleteAll();
+                              setState(() {});
+                              const snackbar = SnackBar(
+                                  content: Text("Thanh toán thành công"));
+
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackbar);
                             },
                             child: const Text("Thanh toán"),
                           ),

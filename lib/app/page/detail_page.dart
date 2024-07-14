@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_homework_8910/app/page/foget_pass.dart';
 import 'package:flutter_homework_8910/app/page/setting_admin_page.dart';
 import 'package:flutter_homework_8910/app/page/setting_person_page.dart';
 import '../model/user.dart';
@@ -172,7 +173,13 @@ class _DetailState extends State<Detail> {
               ),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FogetPass(),
+                    ));
+              },
               child: const ListTile(
                 title: Row(
                   children: [

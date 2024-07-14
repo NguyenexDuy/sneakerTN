@@ -14,6 +14,10 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  deleteAll() {
+    list = [];
+  }
+
   int get sum {
     int count = 0;
 

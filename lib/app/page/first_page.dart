@@ -27,31 +27,31 @@ class _FirstpageState extends State<Firstpage>
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 1500),
     );
     opacityAnimation = Tween<double>(begin: 0, end: 1).animate(controller);
-    slideAnimaton =
-        Tween(begin: Offset(1, 1), end: Offset.zero).animate(CurvedAnimation(
+    slideAnimaton = Tween(begin: const Offset(1, 1), end: Offset.zero)
+        .animate(CurvedAnimation(
       parent: controller,
       curve: Curves.ease,
     ));
-    slideAnimaton01 =
-        Tween(begin: Offset(-1, 0), end: Offset.zero).animate(CurvedAnimation(
+    slideAnimaton01 = Tween(begin: const Offset(-1, 0), end: Offset.zero)
+        .animate(CurvedAnimation(
       parent: controller,
       curve: Curves.ease,
     ));
-    slideAnimaton02 =
-        Tween(begin: Offset(-1, 0), end: Offset.zero).animate(CurvedAnimation(
+    slideAnimaton02 = Tween(begin: const Offset(-1, 0), end: Offset.zero)
+        .animate(CurvedAnimation(
       parent: controller,
       curve: Curves.ease,
     ));
-    slideAnimaton03 =
-        Tween(begin: Offset(1, 0), end: Offset.zero).animate(CurvedAnimation(
+    slideAnimaton03 = Tween(begin: const Offset(1, 0), end: Offset.zero)
+        .animate(CurvedAnimation(
       parent: controller,
       curve: Curves.ease,
     ));
-    slideAnimaton04 =
-        Tween(begin: Offset(0, 1), end: Offset.zero).animate(CurvedAnimation(
+    slideAnimaton04 = Tween(begin: const Offset(0, 1), end: Offset.zero)
+        .animate(CurvedAnimation(
       parent: controller,
       curve: Curves.ease,
     ));
@@ -116,7 +116,7 @@ class _FirstpageState extends State<Firstpage>
                           Center(
                             child: FadeTransition(
                               opacity: opacityAnimation,
-                              child: Text(
+                              child: const Text(
                                 "SNEAKERS",
                                 style: TextStyle(
                                   fontSize: 55,
@@ -166,21 +166,21 @@ class _FirstpageState extends State<Firstpage>
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           SizedBox(
-                            width: 105,
-                            height: 40,
+                            width: 130,
+                            height: 50,
                             child: ElevatedButton(
                               onPressed: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Register(),
+                                      builder: (context) => const Register(),
                                     ));
                               },
                               child: Text(
                                 "Register",
                                 style: TextStyle(
-                                  color: Colors.white,
-                                ),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
                               ),
                               style: OutlinedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -191,20 +191,21 @@ class _FirstpageState extends State<Firstpage>
                             ),
                           ),
                           SizedBox(
-                            width: 105,
-                            height: 40,
-                            child: OutlinedButton(
+                            width: 130,
+                            height: 50,
+                            child: ElevatedButton(
                               onPressed: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => LoginScreen(),
+                                      builder: (context) => const LoginScreen(),
                                     ));
                               },
                               child: Text(
                                 "Sign in",
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                               style: OutlinedButton.styleFrom(
@@ -230,7 +231,7 @@ class _FirstpageState extends State<Firstpage>
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                         child: Transform.rotate(
                             angle: -35 * pi / 180,
                             child: Image.asset(

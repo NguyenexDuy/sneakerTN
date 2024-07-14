@@ -60,12 +60,7 @@ class _DetailCatePageState extends State<DetailCatePage> {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               var itemBuild = snapshot.data![index];
-              return ItemShoeOfBrand(
-                  shoe: Product(
-                      nameProduct: itemBuild.nameProduct,
-                      imageUrl: itemBuild.imageUrl,
-                      price: itemBuild.price,
-                      idCategory: 1));
+              return ItemShoeOfBrand(shoe: itemBuild);
             },
           );
         },

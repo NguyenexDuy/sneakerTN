@@ -8,7 +8,7 @@ class tinhtrangdonhang extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textStyle = const TextStyle(
-        fontWeight: FontWeight.bold, color: Colors.white, fontSize: 12);
+        fontWeight: FontWeight.bold, color: Colors.white, fontSize: 15);
     return Container(
       width: double.infinity,
       height: 80,

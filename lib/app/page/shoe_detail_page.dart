@@ -119,19 +119,22 @@ class _ShoeDetailPageState extends State<ShoeDetailPage> {
                         },
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Consumer<CartProvider>(
-                          builder: (context, value, child) => ElevatedButton(
-                              onPressed: () {
-                                value.add(widget.product);
-                              },
-                              child: const Text('Thêm vào giỏ hàng')),
-                        ),
-                        FilledButton(
-                            onPressed: () {}, child: const Text("Thanh toán"))
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Consumer<CartProvider>(
+                        builder: (context, value, child) => ElevatedButton(
+                            onPressed: () {
+                              value.add(widget.product);
+
+                              const snackbar = SnackBar(
+                                  content:
+                                      Text("Thêm vào giỏ hàng thành công"));
+
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackbar);
+                            },
+                            child: const Text('Thêm vào giỏ hàng')),
+                      ),
                     )
                   ],
                 ),

@@ -22,8 +22,8 @@ class _ItemShoeOfBrandState extends State<ItemShoeOfBrand> {
         children: [
           Container(
             margin: const EdgeInsets.only(top: 50),
-            width: 120,
-            height: 120,
+            width: 140,
+            height: 140,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.white,
@@ -55,7 +55,7 @@ class _ItemShoeOfBrandState extends State<ItemShoeOfBrand> {
           ),
           Image.network(
             widget.shoe.imageUrl,
-            width: 120,
+            width: 140,
             height: 80,
             fit: BoxFit.cover,
           ),

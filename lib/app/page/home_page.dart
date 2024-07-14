@@ -2,19 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_homework_8910/app/data/api.dart';
-import 'package:flutter_homework_8910/app/data/sharepre.dart';
 import 'package:flutter_homework_8910/app/model/category.dart';
 import 'package:flutter_homework_8910/app/model/product.dart';
 import 'package:flutter_homework_8910/app/model/user.dart';
-import 'package:flutter_homework_8910/app/page/detail_cate_page.dart';
 import 'package:flutter_homework_8910/app/page/shoe_detail_page.dart';
-import 'package:flutter_homework_8910/const/image_url.dart';
 import 'package:flutter_homework_8910/widget/item_category.dart';
 import 'package:flutter_homework_8910/widget/item_shoeOf_brand.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -33,17 +30,13 @@ class _HomePageState extends State<HomePage> {
     "assets/images/banner/banner04.jpg",
     "assets/images/banner/banner05.jpg",
   ];
-  getDataUser() async {
+  getData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String strUser = pref.getString('user')!;
 
     user = User.fromJson(jsonDecode(strUser));
 
-    setState(() {});
-  }
-
-  Future<void> fetchProduct() async {
-    String token = await APIRepository().login('21dh110294', "duy222222");
+    String token = pref.getString("token")!;
     List<Product> listPro =
         await APIRepository().getProduct("21dh110294", token);
 
@@ -66,9 +59,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    getDataUser();
+    getData();
     fetchCategor();
-    fetchProduct();
   }
 
   @override
@@ -149,7 +141,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Text(
                   "Tất cả sản phẩm",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 Text("🔥")
               ],

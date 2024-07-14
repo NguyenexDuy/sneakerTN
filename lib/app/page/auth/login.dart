@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter_homework_8910/app/data/api.dart';
 import 'package:flutter_homework_8910/app/page/foget_pass.dart';
+import 'package:flutter_homework_8910/app/page/register.dart';
 import 'package:flutter_homework_8910/mainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -17,22 +18,29 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController accountController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  login() async {
-    setState(() {
-      isLoading = true;
-    });
-    //lấy token (lưu share_preference)
-    String token = await APIRepository().login("21dh110294", "duy222222");
-    var user = await APIRepository().current(token);
-    // save share
-    saveUser(user);
-    //
-    setState(() {
-      isLoading = false;
-    });
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const Mainpage()));
-    return token;
+  login(TextEditingController account, TextEditingController pass) async {
+    if (account.text.isEmpty || pass.text.isEmpty) {
+      const snackbar =
+          SnackBar(content: Text("Vui lòng nhập tài khoản, mật khẩu"));
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    } else {
+      setState(() {
+        isLoading = true;
+      });
+      //lấy token (lưu share_preference)
+      String token = await APIRepository()
+          .login(accountController.text, passwordController.text);
+      var user = await APIRepository().current(token);
+      // save share
+      saveUser(user);
+      //
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const Mainpage()));
+      return token;
+    }
   }
 
   bool isLoading = false;
@@ -112,7 +120,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 20,
                           ),
                           OutlinedButton(
-                              onPressed: login,
+                              onPressed: () {
+                                login(accountController, passwordController);
+                              },
                               child: const Text(
                                 "Sign In",
                                 style: TextStyle(
@@ -125,34 +135,49 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+                Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 12),
+                      child: Text(
+                        "Quên mật khẩu",
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ))
               ],
             ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Container(
-              alignment: Alignment.topCenter,
-              width: sizeWidth,
-              height: sizeHeight * 1 / 10,
-              decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(80),
-                    topRight: Radius.circular(80),
-                  )),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const FogetPass(),
-                        ));
-                  },
-                  child: const Text(
-                    "Don't have account? Click me 👉👈",
-                    style: TextStyle(fontSize: 15),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Register(),
+                    ));
+              },
+              child: Container(
+                alignment: Alignment.topCenter,
+                width: sizeWidth,
+                height: 80,
+                decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(80),
+                      topRight: Radius.circular(80),
+                    )),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: GestureDetector(
+                    child: const Text(
+                      "Don't have account? Click me 👉👈",
+                      style: TextStyle(fontSize: 15),
+                    ),
                   ),
                 ),
               ),
