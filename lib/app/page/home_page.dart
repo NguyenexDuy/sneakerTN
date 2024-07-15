@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_homework_8910/app/data/api.dart';
@@ -38,19 +39,15 @@ class _HomePageState extends State<HomePage> {
 
     String token = pref.getString("token")!;
     List<Product> listPro =
-        await APIRepository().getProduct("21dh110294", token);
+        await APIRepository().getProduct(user.accountId.toString(), token);
 
     setState(() {
       products = listPro;
     });
-  }
 
-  Future<void> fetchCategor() async {
-    String token = await APIRepository().login('21dh110294', "duy222222");
     List<Category> listCate =
-        await APIRepository().getCates("21dh110294", token);
-    print("day la chie dai cua listCate: ${listCate.length}");
-
+        await APIRepository().getCates(user.accountId.toString(), token);
+    log("day la chie dai cua listCate: ${listCate.length}");
     setState(() {
       categories = listCate;
     });
@@ -60,7 +57,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     getData();
-    fetchCategor();
   }
 
   @override

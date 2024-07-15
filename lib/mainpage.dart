@@ -134,26 +134,6 @@ class _MainpageState extends State<Mainpage> {
                         builder: (context) => const FavoritePage()));
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.pages),
-              title: const Text('Page2'),
-              onTap: () {
-                Navigator.pop(context);
-                _selectedIndex = 0;
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Page2()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.pages),
-              title: const Text('Page3'),
-              onTap: () {
-                Navigator.pop(context);
-                _selectedIndex = 0;
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Page3()));
-              },
-            ),
             const Divider(
               color: Colors.black,
             ),
