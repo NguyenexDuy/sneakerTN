@@ -1,3 +1,5 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_homework_8910/app/data/cart_provider.dart';
 import 'package:flutter_homework_8910/app/page/auth/login.dart';
@@ -5,7 +7,10 @@ import 'package:flutter_homework_8910/app/page/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(DevicePreview(
+    enabled: !kReleaseMode,
+    builder: (context) => const MainApp(),
+  ));
 }
 
 class MainApp extends StatelessWidget {
@@ -24,10 +29,5 @@ class MainApp extends StatelessWidget {
         home: SplashScreen(),
       ),
     );
-    // const MaterialApp(
-    //   debugShowCheckedModeBanner: false,
-    //   home: LoginScreen(),
-    // initialRoute: "/",
-    // onGenerateRoute: AppRoute.onGenerateRoute,  -> su dung auto route (pushName)
   }
 }
